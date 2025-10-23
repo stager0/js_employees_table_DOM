@@ -108,10 +108,33 @@ function sortNumbers(nthChildNumber, desk) {
   return valueToReturn;
 }
 
+function resetSortFlags(except) {
+  if (except !== 'name') {
+    nameDesk = false;
+  }
+
+  if (except !== 'position') {
+    positionDesk = false;
+  }
+
+  if (except !== 'office') {
+    officeDesk = false;
+  }
+
+  if (except !== 'age') {
+    ageDesk = false;
+  }
+
+  if (except !== 'salary') {
+    salaryDesk = false;
+  }
+}
+
 const nameTh = document.querySelector('.name');
 
 nameTh.addEventListener('click', (e) => {
   e.preventDefault();
+  resetSortFlags('name');
 
   nameDesk = sortWords(0, nameDesk);
 });
@@ -120,6 +143,7 @@ const positionTh = document.querySelector('.position');
 
 positionTh.addEventListener('click', (e) => {
   e.preventDefault();
+  resetSortFlags('position');
 
   positionDesk = sortWords(1, positionDesk);
 });
@@ -128,6 +152,7 @@ const officeTh = document.querySelector('.office');
 
 officeTh.addEventListener('click', (e) => {
   e.preventDefault();
+  resetSortFlags('office');
 
   officeDesk = sortWords(2, officeDesk);
 });
@@ -136,6 +161,7 @@ const ageTh = document.querySelector('.age');
 
 ageTh.addEventListener('click', (e) => {
   e.preventDefault();
+  resetSortFlags('age');
 
   ageDesk = sortNumbers(3, ageDesk);
 });
@@ -144,6 +170,7 @@ const salaryTh = document.querySelector('.salary');
 
 salaryTh.addEventListener('click', (e) => {
   e.preventDefault();
+  resetSortFlags('salary');
 
   salaryDesk = sortNumbers(4, salaryDesk);
 });
@@ -158,6 +185,8 @@ function setDataAndNameAndType(element, dataset, nameValue, type = 'no-type') {
   element.name = nameValue;
   element.required = true;
 
+  // Это для cypress потому то тесты не проходят без этого,
+  // cypress требует error notification когда ПОЛЕ ПУСТОЕ.
   if (nameValue === 'position') {
     element.required = false;
   }
@@ -322,6 +351,8 @@ newForm.addEventListener('submit', (e) => {
       throwedError = true;
     }
 
+    // Это для cypress потому то тесты не проходят без этого,
+    // cypress требует error notification когда ПОЛЕ ПУСТОЕ.
     if (!positionValue || positionValue.length < 1) {
       throwNotification('error', 'Invalid Position.');
       throwedError = true;
